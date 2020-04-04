@@ -1,7 +1,7 @@
 # ShoppingList
 
 ## Summary
-* Using a Expo-cli to set up the React Native project. 
+* Using Expo-cli to set up the React Native project. 
 * Use Android emulators and iOS simulators to see how the app looks and behaves in different environments.
 * A simple React Native App that keeps lists. Users can create lists and add new items to their list, which gets stored in Firebase.
 
