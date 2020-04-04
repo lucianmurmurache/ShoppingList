@@ -40,7 +40,7 @@ class App extends React.Component {
 
   componentDidMount() {
     // Listen to authentication events
-    this.authUnsubscribe = firebase.auth().onAuthStateChanged((async, user) => {
+    this.authUnsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
         await firebase.auth().signInAnonymously();
       }
@@ -50,7 +50,7 @@ class App extends React.Component {
         loggedInText: 'Hello there',
       });
 
-      // Create a reference to the active user's shopping lists
+      // Create reference to the active user's shopping lists
       this.referenceShoppinglistUser = firebase.firestore().collection('shoppinglists').where("uid", "==", this.state.uid);
       // Listen to collection changes for current user 
       this.unsubscribeListUser = this.referenceShoppinglistUser.onSnapshot(this.onCollectionUpdate);
