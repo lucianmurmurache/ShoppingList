@@ -38,25 +38,6 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount() {
-    // Listen to authentication events
-    this.authUnsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (!user) {
-        await firebase.auth().signInAnonymously();
-      }
-      // Update user state with currently active user data
-      this.setState({
-        uid: user.uid,
-        loggedInText: 'Hello there',
-      });
-
-      // Create reference to the active user's shopping lists
-      this.referenceShoppinglistUser = firebase.firestore().collection('shoppinglists').where("uid", "==", this.state.uid);
-      // Listen to collection changes for current user 
-      this.unsubscribeListUser = this.referenceShoppinglistUser.onSnapshot(this.onCollectionUpdate);
-    });
-  }
-
   onCollectionUpdate = (querySnapshot) => {
     const lists = [];
     // Go through each document
@@ -79,6 +60,25 @@ class App extends React.Component {
       name: 'TestList',
       items: ['cashews', 'brazilnuts', 'cocunut'],
       uid: this.state.uid,
+    });
+  }
+
+  componentDidMount() {
+    // Listen to authentication events
+    this.authUnsubscribe = firebase.auth().onAuthStateChanged(async user => {
+      if (!user) {
+        await firebase.auth().signInAnonymously();
+      }
+      // Update user state with currently active user data
+      this.setState({
+        uid: user.uid,
+        loggedInText: 'Hello there',
+      });
+
+      // Create reference to the active user's shopping lists
+      this.referenceShoppinglistUser = firebase.firestore().collection('shoppinglists').where("uid", "==", this.state.uid);
+      // Listen to collection changes for current user 
+      this.unsubscribeListUser = this.referenceShoppinglistUser.onSnapshot(this.onCollectionUpdate);
     });
   }
 
